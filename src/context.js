@@ -6,13 +6,25 @@ import reducer from './reducer'
 const url = 'https://course-api.com/react-useReducer-cart-project'
 const AppContext = React.createContext()
 
-const AppProvider = ({ children }) => {
-  const [cart, setCart] = useState(cartItems)
+const initialState = {
+  loading: false,
+  cart: cartItems,
+  total: 0,
+  amount: 0,
+}
 
-  return (
+const AppProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer,  initialState);
+
+  const clearCart = () => {
+    dispatch({ type: 'CLEAR_CART'})
+  }
+
+  return (  
     <AppContext.Provider
       value={{
-        cart,
+        ...state,
+        clearCart,
       }}
     >
       {children}
